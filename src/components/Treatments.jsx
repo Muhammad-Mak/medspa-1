@@ -118,10 +118,10 @@ function TreatmentCard({ treatment, index }) {
           />
         </motion.div>
 
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/30 to-transparent transition-opacity duration-500 group-hover:from-charcoal/90" />
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-charcoal/50 to-charcoal/10 transition-opacity duration-500 group-hover:via-charcoal/60" />
 
         {/* Content overlay with staggered entrance */}
-        <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-10">
+        <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-10 overlay-text">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -146,7 +146,7 @@ function TreatmentCard({ treatment, index }) {
             {treatment.title}
           </h3>
 
-          <p className="text-white/70 text-sm leading-relaxed max-w-md transition-all duration-500 group-hover:text-white/90">
+          <p className="text-white/80 text-sm leading-relaxed max-w-md transition-all duration-500 group-hover:text-white/90">
             {treatment.description}
           </p>
 

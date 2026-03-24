@@ -69,7 +69,7 @@ export default function FullWidthImage({
       {/* Overlay text */}
       <div
         ref={textRef}
-        className={`relative z-10 flex flex-col justify-center h-full ${alignClasses[align]}`}
+        className={`relative z-10 flex flex-col justify-center h-full overlay-text ${alignClasses[align]}`}
       >
         {subtitle && (
           <motion.p

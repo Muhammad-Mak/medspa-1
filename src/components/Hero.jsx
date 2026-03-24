@@ -96,7 +96,7 @@ export default function Hero() {
       {/* Overlay text */}
       <motion.div
         style={{ opacity }}
-        className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center"
+        className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center overlay-text"
       >
         <motion.p
           initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
