@@ -18,7 +18,7 @@ function App() {
       <About />
 
       <FullWidthImage
-        src="https://api.lanserhof.com/wp-content/uploads/2025/07/LHS_Treppe-Hochformat_People-scaled-aspect-ratio-3-2-scaled.jpg"
+        src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80"
         alt="Wellness journey"
         subtitle="The Lumiere Experience"
         title={<>Where Science Meets <em>Serenity</em></>}
@@ -29,7 +29,7 @@ function App() {
       <Treatments />
 
       <FullWidthImage
-        src="https://api.lanserhof.com/wp-content/uploads/2025/07/lanserhof-lans-the-light-side-of-the-moon-scaled-aspect-ratio-3-2-scaled.jpg"
+        src="https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=1920&q=80"
         alt="Evening at Lumiere"
         subtitle="A Sanctuary for the Senses"
         title={<>Designed for <em>Stillness</em></>}
@@ -40,7 +40,7 @@ function App() {
       <Programs />
 
       <FullWidthImage
-        src="https://api.lanserhof.com/wp-content/uploads/2025/07/lanserhof-tegernsee-alexander-haiden-2020-suite-lounge-aspect-ratio-3-2.jpg"
+        src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1920&q=80"
         alt="Luxury suite"
         subtitle="Uncompromising Luxury"
         title={<>Live <em>Extraordinarily</em></>}
