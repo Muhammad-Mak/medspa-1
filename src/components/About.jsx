@@ -6,17 +6,18 @@ export default function About() {
   const sectionRef = useRef(null)
   const imgRef = useRef(null)
   const isInView = useInView(sectionRef, 0.2)
+  const imgInView = useInView(imgRef, 0.3)
 
   const { scrollYProgress } = useScroll({
     target: imgRef,
     offset: ['start end', 'end start'],
   })
   const imgY = useTransform(scrollYProgress, [0, 1], ['8%', '-8%'])
+  const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.15, 1, 1])
 
   return (
     <section id="about" ref={sectionRef} className="py-24 md:py-36 bg-cream">
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20">
-        {/* Section label */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -27,7 +28,6 @@ export default function About() {
         </motion.p>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Text */}
           <div>
             <motion.h2
               initial={{ opacity: 0, y: 40 }}
@@ -87,15 +87,30 @@ export default function About() {
             </motion.div>
           </div>
 
-          {/* Image with parallax */}
+          {/* Image with parallax + clip-path reveal + zoom */}
           <div ref={imgRef} className="relative overflow-hidden h-[500px] lg:h-[650px]">
-            <motion.img
-              style={{ y: imgY }}
-              src="https://api.lanserhof.com/wp-content/uploads/2025/07/AJ_01954-2-scaled.jpg"
-              alt="Wellness consultation"
-              className="w-full h-[120%] object-cover"
+            <motion.div
+              initial={{ clipPath: 'inset(100% 0 0 0)' }}
+              animate={imgInView ? { clipPath: 'inset(0% 0 0 0)' } : {}}
+              transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full h-full"
+            >
+              <motion.img
+                style={{ y: imgY, scale: imgScale }}
+                src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80"
+                alt="Wellness consultation"
+                className="w-full h-[120%] object-cover"
+              />
+            </motion.div>
+            <div className="absolute inset-0 bg-gradient-to-t from-charcoal/10 to-transparent pointer-events-none" />
+
+            {/* Decorative gold corner accent */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={imgInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.8, delay: 1 }}
+              className="absolute -bottom-3 -right-3 w-24 h-24 border-b-2 border-r-2 border-gold/30 pointer-events-none"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-charcoal/10 to-transparent" />
           </div>
         </div>
       </div>
