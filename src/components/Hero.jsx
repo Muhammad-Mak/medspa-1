@@ -1,9 +1,21 @@
-import { motion, useScroll, useTransform } from 'motion/react'
-import { useRef } from 'react'
+import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import { ChevronDown } from 'lucide-react'
+
+const heroImages = [
+  'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=1920&q=80',
+  'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=1920&q=80',
+  'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1920&q=80',
+  'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1920&q=80',
+  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80',
+]
+
+const CYCLE_DURATION = 6000
 
 export default function Hero() {
   const ref = useRef(null)
+  const [current, setCurrent] = useState(0)
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
@@ -11,32 +23,67 @@ export default function Hero() {
 
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15])
-  const imgBrightness = useTransform(scrollYProgress, [0, 1], [1, 0.6])
+  const containerScale = useTransform(scrollYProgress, [0, 1], [1, 1.15])
+
+  const advance = useCallback(() => {
+    setCurrent((c) => (c + 1) % heroImages.length)
+  }, [])
+
+  useEffect(() => {
+    const id = setInterval(advance, CYCLE_DURATION)
+    return () => clearInterval(id)
+  }, [advance])
 
   return (
     <section ref={ref} className="relative h-screen w-full overflow-hidden">
-      {/* Full-bleed background image with parallax + Ken Burns on load */}
+      {/* Image carousel with Ken Burns zoom per slide */}
       <motion.div
-        style={{ y, scale }}
+        style={{ y, scale: containerScale }}
         className="absolute inset-0 w-full h-full"
       >
-        <motion.img
-          initial={{ scale: 1.3, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{ filter: `brightness(${imgBrightness})` }}
-          src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=1920&q=80"
-          alt="Lumiere Wellness retreat"
-          className="w-full h-full object-cover"
-        />
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 0.5 }}
-          className="absolute inset-0 bg-gradient-to-b from-charcoal/40 via-charcoal/20 to-charcoal/70"
-        />
+        <AnimatePresence mode="popLayout">
+          <motion.img
+            key={current}
+            src={heroImages[current]}
+            alt="Lumiere Wellness retreat"
+            initial={{ scale: 1.3, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 1.05, opacity: 0 }}
+            transition={{
+              scale: { duration: CYCLE_DURATION / 1000, ease: 'linear' },
+              opacity: { duration: 1.5, ease: [0.22, 1, 0.36, 1] },
+            }}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </AnimatePresence>
+
+        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/40 via-charcoal/20 to-charcoal/70 z-[1]" />
       </motion.div>
+
+      {/* Progress indicators */}
+      <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-20 flex gap-2.5">
+        {heroImages.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className="relative h-0.5 w-8 bg-white/20 overflow-hidden cursor-pointer"
+            aria-label={`Go to slide ${i + 1}`}
+          >
+            {i === current && (
+              <motion.div
+                key={`bar-${current}`}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: CYCLE_DURATION / 1000, ease: 'linear' }}
+                className="absolute inset-0 bg-gold origin-left"
+              />
+            )}
+            {i < current && (
+              <div className="absolute inset-0 bg-gold/50" />
+            )}
+          </button>
+        ))}
+      </div>
 
       {/* Decorative animated line */}
       <motion.div
